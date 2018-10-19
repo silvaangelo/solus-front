@@ -36,6 +36,25 @@ class Dashboard extends React.Component {
     }
   }
 
+  getStatistic = async (values) => {
+    try {
+      const res = await axios.get(`${API_ROUTES.statistic}/${values.arduino}`, {
+        params: {
+          from: values.range[0].format('YYYY-MM-DD HH:mm'),
+          to: values.range[1].format('YYYY-MM-DD HH:mm'),
+          interval: `${values.intervalValue}${values.intervalGrandeur}`,
+          skip: 0,
+          limit: 100
+        },
+        headers: API_HEADERS.headers
+      });
+
+      console.log(res);
+    } catch (e) {
+      notifyWithIcon('error', 'Ocorreu um ero ao carregar as estatísticas, por favor, tente novamente mais tarde.');
+    }
+  }
+
   loadStatistic = async (e) => {
     e.preventDefault();
 
@@ -44,7 +63,7 @@ class Dashboard extends React.Component {
         return;
       }
 
-      console.log(values);
+      await this.getStatistic(values);
     });
   }
   
@@ -116,7 +135,7 @@ class Dashboard extends React.Component {
                           {getFieldDecorator('intervalValue', {
                             rules: [{ required: true, message: 'Por favor escolha o intervalo.' }]
                           }) (
-                            <InputNumber placeholder="Intervalo" />
+                            <InputNumber min={0} placeholder="Intervalo" />
                           )}
                         </Form.Item>
                       </Col>

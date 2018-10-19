@@ -8,6 +8,8 @@
 
 # production
 /build
+coverage
+.vscode
 
 # misc
 .DS_Store
