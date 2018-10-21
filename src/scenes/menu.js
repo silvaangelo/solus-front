@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Layout } from 'antd';
 import './main.css';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ class TopMenu extends React.Component {
     const activeClassName = 'selected ant-menu-item-selected';
 
     return (
-      <header id="main-menu">
+      <Layout.Header id="main-menu">
         <Menu mode='horizontal' className="menu">
           <Menu.Item className={this.state.active === 'dashboard' ? activeClassName : ''}>
             <Link to="/dashboard" onClick={this.handleClick}><Icon type='dashboard'/>Dashboard</Link>
@@ -32,7 +32,7 @@ class TopMenu extends React.Component {
           <Link to="/logout" onClick={this.handleClick}><Icon type='logout'/>Logout</Link>
           </Menu.Item>
         </Menu>
-      </header>
+      </Layout.Header>
     )
   }
 }
