@@ -1,6 +1,6 @@
 import React from 'react';
 import TopMenu from '../menu';
-import { API_ROUTES, API_HEADERS } from '../../api'
+import { API_ROUTES, API_HEADERS } from '../../api';
 import * as axios from 'axios';
 import { notifyWithIcon } from '../helpers/notification';
 import { Layout, Row, Col, Table, Button, Icon, Divider, Modal } from 'antd';

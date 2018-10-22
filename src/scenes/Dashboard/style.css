@@ -1,0 +1,29 @@
+.measures b.ambienceTemperature {
+    color: #d11141;
+    margin-right: 2px;
+}
+
+.measures b.rainfall {
+    color: #00a119;
+    margin-right: 2px;
+}
+
+.measures b.sunCapability {
+    color: #00aedb;
+    margin-right: 2px;
+}
+
+.measures b.humidity {
+    color: #f37735;
+    margin-right: 2px;
+}
+
+.measures b.temperatureHumidity {
+    color: #ffc425;
+    margin-right: 2px;
+}
+
+.measures b.lightIntensity {
+    color: #9a12c7;
+    margin-right: 2px;
+}

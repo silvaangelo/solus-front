@@ -1,6 +1,6 @@
 import React from 'react';
 import TopMenu from '../menu';
-import { Layout, Row, Col, Divider, Select, Form, InputNumber, DatePicker, Button } from 'antd';
+import { Layout, Row, Col, Divider, Select, Form, InputNumber, DatePicker, Button, List } from 'antd';
 import * as axios from 'axios';
 import { API_ROUTES, API_HEADERS } from '../../api';
 import { notifyWithIcon } from '../helpers/notification'
@@ -52,9 +52,7 @@ class Dashboard extends React.Component {
         params: {
           from: values.range[0].format('YYYY-MM-DD HH:mm'),
           to: values.range[1].format('YYYY-MM-DD HH:mm'),
-          interval: `${values.intervalValue}${values.intervalGrandeur}`,
-          skip: 0,
-          limit: 100
+          interval: `${values.intervalValue}${values.intervalGrandeur}`
         },
         headers: API_HEADERS.headers
       });
@@ -65,7 +63,6 @@ class Dashboard extends React.Component {
         return e;
       });
     } catch (e) {
-      console.log(e);
       notifyWithIcon('error', 'Ocorreu um ero ao carregar as estatísticas, por favor, tente novamente mais tarde.');
     }
   }
@@ -84,7 +81,7 @@ class Dashboard extends React.Component {
       const data = await this.getStatistic(values);
 
       this.setState({
-        data: data,
+        data: data.reverse(),
         isStatisticLoaded: true,
         loadingStatistic: false
       });
@@ -101,9 +98,52 @@ class Dashboard extends React.Component {
   }
 
   charts = () => {
-    if(!this.state.isStatisticLoaded) {
+    if(!this.state.isStatisticLoaded && this.state.data.length <= 0) {
       return (null);
     }
+
+    const columns = [
+      {
+        key: 'AmbienceTemperature',
+        text: 'Temperatura'
+      },
+      {
+        key: 'Rainfall',
+        text: 'Chuva'
+      },
+      {
+        key: 'SunCapability',
+        text: 'Incidência Solar'
+      },
+      {
+        key: 'Humidity',
+        text: 'Umidade'
+      },
+      {
+        key: 'TemperatureHumidity',
+        text: 'Temperatura a umidade'
+      },
+      {
+        key: 'LightIntensity',
+        text: 'Intensidade de luz'
+      }
+    ];
+    
+    const max = columns.map(e => {
+      return {
+        name: e.text,
+        key: e.key,
+        value: this.state.data[0][`max${e.key}`]
+      };
+    });
+
+    const min = columns.map(e => {
+      return {
+        name: e.text,
+        key: e.key,
+        value: this.state.data[0][`min${e.key}`]
+      };
+    });
 
     return (
       <div>
@@ -112,6 +152,50 @@ class Dashboard extends React.Component {
         <Row>
           <Col span={24}>
             <h2>Resultados:</h2>
+          </Col>
+        </Row>
+
+        <Divider/>
+
+        <Row>
+          <Col span={24}>
+            <h3>Mínimas:</h3>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col span={24}>
+            <List className="measures" dataSource={min} renderItem={item => (
+              <List.Item>
+                <b className={`${item.key.replace(/^\w/, c => c.toLowerCase())}`}>{`${item.name}`}: </b> {item.value}
+              </List.Item>
+            )} />
+          </Col>
+        </Row>
+
+        <Divider/>
+
+        <Row>
+          <Col span={24}>
+            <h3>Máximas:</h3>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col span={24}>
+            <List className="measures" dataSource={max} renderItem={item => (
+              <List.Item>
+                <b className={`${item.key.replace(/^\w/, c => c.toLowerCase())}`}>{`${item.name}`}: </b> {item.value}
+              </List.Item>
+            )} />
+          </Col>
+        </Row>
+
+        <Divider/>
+
+        <Row>
+          <Col span={24}>
+            <h3>Gráficos:</h3>
           </Col>
         </Row>
 
@@ -125,11 +209,11 @@ class Dashboard extends React.Component {
                 <Tooltip />
                 <Legend />
                 <Line name="Temperatura" type="monotone" dataKey="ambienceTemperature" stroke="#d11141" />
-                <Line name="Chuva" type="monotone" dataKey="rainfall" stroke="#00b159" />
+                <Line name="Chuva" type="monotone" dataKey="rainfall" stroke="#00a119" />
                 <Line name="Incidência Solar" type="monotone" dataKey="sunCapability" stroke="#00aedb" />
                 <Line name="Umidade" type="monotone" dataKey="humidity" stroke="#f37735" />
                 <Line name="Temperatura a umidade" type="monotone" dataKey="temperatureHumidity" stroke="#ffc425" />
-                <Line name="Intensidade de luz" type="monotone" dataKey="lightIntensity" stroke="#60d0e7" />
+                <Line name="Intensidade de luz" type="monotone" dataKey="lightIntensity" stroke="#9a12c7" />
               </LineChart>
             </ResponsiveContainer>
           </Col>
@@ -166,7 +250,7 @@ class Dashboard extends React.Component {
             <Row>
               <Form onSubmit={this.loadStatistic}>
                 <Row>
-                  <Col span={7}>
+                  <Col xs={24} lg={7} sm={7} md={7}>
                     <Form.Item>
                       {getFieldDecorator('arduino', {
                         rules: [{ required: true, message: 'Por favor escolha o arduino.' }]
@@ -182,19 +266,19 @@ class Dashboard extends React.Component {
                 </Row>
 
                 <Row>
-                  <Col span={4}>
+                  <Col xs={24} lg={24} sm={24} md={24}>
                     <Form.Item style={{maxWidth: "100%"}}>
                       {getFieldDecorator('range', {
                         rules: [{ required: true, message: 'Por favor escolha a data inicial e a data limite.' }]
                       }) (
-                        <RangePicker placeholder={["Data inicial", "Data final"]} showTime format="YYYY-MM-DD HH:mm:ss" required />
+                        <RangePicker placeholder={["De", "Até"]} showTime format="YYYY-MM-DD HH:mm:ss" required />
                       )}
                     </Form.Item>
                   </Col>
                 </Row>
 
                 <Row>
-                  <Col span={2}>
+                  <Col xs={7} lg={2} sm={2} md={2}>
                     <Form.Item>
                       {getFieldDecorator('intervalValue', {
                         rules: [{ required: true, message: 'Por favor escolha o intervalo.' }]
@@ -204,7 +288,7 @@ class Dashboard extends React.Component {
                     </Form.Item>
                   </Col>
 
-                  <Col span={2}>
+                  <Col xs={17} lg={2} sm={2} md={2}>
                     <Form.Item>
                       {getFieldDecorator('intervalGrandeur', {
                         rules: [{ required: true, message: 'Por favor escolha a grandeza de intervalo.' }]

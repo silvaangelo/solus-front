@@ -1,4 +1,4 @@
-import { Auth } from './lib/auth'
+import { Auth } from './lib/auth';
 
 export const HOST = 'http://localhost:3000/api';
 
