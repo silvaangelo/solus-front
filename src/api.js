@@ -1,6 +1,6 @@
 import { Auth } from './lib/auth';
 
-export const HOST = 'http://localhost:3000/api';
+export const HOST = process.env.REACT_APP_API_HOST;
 
 export const API_ROUTES = {
   arduino: `${HOST}/arduino`,

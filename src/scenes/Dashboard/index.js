@@ -1,6 +1,6 @@
 import React from 'react';
 import TopMenu from '../menu';
-import { Layout, Row, Col, Divider, Select, Form, InputNumber, DatePicker, Button, List } from 'antd';
+import { Layout, Row, Col, Divider, Select, Form, InputNumber, DatePicker, Button } from 'antd';
 import * as axios from 'axios';
 import { API_ROUTES, API_HEADERS } from '../../api';
 import { notifyWithIcon } from '../helpers/notification'
@@ -32,14 +32,10 @@ class Dashboard extends React.Component {
       const res = await axios.get(API_ROUTES.arduino, API_HEADERS);
 
       return res.data.data.map(arduino => {
-        return {
-          key: arduino._id,
-          id: arduino._id,
-          name: arduino.name,
-          location: arduino.location,
-          createdAt: arduino.createdAt,
-          updatedAt: arduino.updatedAt
-        };
+        arduino.key = arduino._id;
+        arduino.id = arduino._id;
+
+        return arduino;
       });
     } catch (e) {
       notifyWithIcon('error', 'Ocorreu um ero ao carregar os arduinos.');
@@ -59,6 +55,12 @@ class Dashboard extends React.Component {
 
       return await res.data.data.statistic.map(e => {
         e.date = moment(e._id).local().format('HH:mm DD/MM/YYYY');
+        e.ambienceTemperature = parseInt(e.ambienceTemperature);
+        e.rainfall = parseInt(e.rainfall);
+        e.sunCapability = parseInt(e.sunCapability);
+        e.humidity = parseInt(e.humidity);
+        e.temperatureHumidity = parseInt(e.temperatureHumidity);
+        e.lightIntensity = parseInt(e.lightIntensity);
 
         return e;
       });
@@ -85,8 +87,6 @@ class Dashboard extends React.Component {
         isStatisticLoaded: true,
         loadingStatistic: false
       });
-  
-      window.scrollTo(0, 50000);
     });
   }
   
@@ -102,49 +102,6 @@ class Dashboard extends React.Component {
       return (null);
     }
 
-    const columns = [
-      {
-        key: 'AmbienceTemperature',
-        text: 'Temperatura'
-      },
-      {
-        key: 'Rainfall',
-        text: 'Chuva'
-      },
-      {
-        key: 'SunCapability',
-        text: 'Incidência Solar'
-      },
-      {
-        key: 'Humidity',
-        text: 'Umidade'
-      },
-      {
-        key: 'TemperatureHumidity',
-        text: 'Temperatura a umidade'
-      },
-      {
-        key: 'LightIntensity',
-        text: 'Intensidade de luz'
-      }
-    ];
-    
-    const max = columns.map(e => {
-      return {
-        name: e.text,
-        key: e.key,
-        value: this.state.data[0][`max${e.key}`]
-      };
-    });
-
-    const min = columns.map(e => {
-      return {
-        name: e.text,
-        key: e.key,
-        value: this.state.data[0][`min${e.key}`]
-      };
-    });
-
     return (
       <div>
         <Divider/>
@@ -152,42 +109,6 @@ class Dashboard extends React.Component {
         <Row>
           <Col span={24}>
             <h2>Resultados:</h2>
-          </Col>
-        </Row>
-
-        <Divider/>
-
-        <Row>
-          <Col span={24}>
-            <h3>Mínimas:</h3>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col span={24}>
-            <List className="measures" dataSource={min} renderItem={item => (
-              <List.Item>
-                <b className={`${item.key.replace(/^\w/, c => c.toLowerCase())}`}>{`${item.name}`}: </b> {item.value}
-              </List.Item>
-            )} />
-          </Col>
-        </Row>
-
-        <Divider/>
-
-        <Row>
-          <Col span={24}>
-            <h3>Máximas:</h3>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col span={24}>
-            <List className="measures" dataSource={max} renderItem={item => (
-              <List.Item>
-                <b className={`${item.key.replace(/^\w/, c => c.toLowerCase())}`}>{`${item.name}`}: </b> {item.value}
-              </List.Item>
-            )} />
           </Col>
         </Row>
 

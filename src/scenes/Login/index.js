@@ -29,6 +29,10 @@ class Login extends React.Component {
 
         window.location.href = '/dashboard';
       } catch (e) {
+        if(!e.response) {
+          return notifyWithIcon('error', 'Não foi possível se conectar com o servidor, verifique a conexão ou tente novamente mais tarde.');
+        }
+
         if(e.response.status < 500) {
           notifyWithIcon('error', 'Dados incorretos, verifique os campos.');
         } else {
