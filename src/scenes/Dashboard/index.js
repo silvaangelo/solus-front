@@ -1,12 +1,13 @@
-import React from 'react';
-import TopMenu from '../menu';
-import { Layout, Row, Col, Divider, Select, Form, InputNumber, DatePicker, Button } from 'antd';
-import * as axios from 'axios';
-import { API_ROUTES, API_HEADERS } from '../../api';
-import { notifyWithIcon } from '../helpers/notification'
-import moment from 'moment';
-import { LineChart, CartesianGrid, Tooltip, Line, XAxis, YAxis, Legend, ResponsiveContainer } from 'recharts';
 import './style.css';
+import React from 'react';
+import moment from 'moment';
+import TopMenu from '../menu';
+import * as axios from 'axios';
+import columns from './columns';
+import { API_ROUTES, API_HEADERS } from '../../api';
+import { notifyWithIcon } from '../helpers/notification';
+import { Layout, Row, Col, Divider, Select, Form, InputNumber, DatePicker, Button, List } from 'antd';
+import { LineChart, CartesianGrid, Tooltip, Line, XAxis, YAxis, Legend, ResponsiveContainer } from 'recharts';
 
 class Dashboard extends React.Component {
   chartRef;
@@ -53,17 +54,35 @@ class Dashboard extends React.Component {
         headers: API_HEADERS.headers
       });
 
-      return await res.data.data.statistic.map(e => {
-        e.date = moment(e._id).local().format('HH:mm DD/MM/YYYY');
-        e.ambienceTemperature = parseInt(e.ambienceTemperature);
-        e.rainfall = parseInt(e.rainfall);
-        e.sunCapability = parseInt(e.sunCapability);
-        e.humidity = parseInt(e.humidity);
-        e.temperatureHumidity = parseInt(e.temperatureHumidity);
-        e.lightIntensity = parseInt(e.lightIntensity);
+      const [averages, minMax] = await Promise.all([
+        res.data.data.statistic.map(e => {
+          e.date = moment(e._id).local().format('HH:mm DD/MM/YYYY');
+          e.ambienceTemperature = parseInt(e.ambienceTemperature);
+          e.rainfall = parseInt(e.rainfall);
+          e.sunCapability = parseInt(e.sunCapability);
+          e.humidity = parseInt(e.humidity);
+          e.temperatureHumidity = parseInt(e.temperatureHumidity);
+          e.lightIntensity = parseInt(e.lightIntensity);
+  
+          return e;
+        }),
+        columns.map(c => {
+          return {
+            key: c.key,
+            min: c.show(parseInt(res.data.data.min[c.key])),
+            max: c.show(parseInt(res.data.data.max[c.key])),
+            text: c.text,
+            color: c.color
+          }
+        })
+      ]);
 
-        return e;
-      });
+      console.log(minMax);
+
+      return {
+        averages: averages.reverse(),
+        minMax: minMax
+      };
     } catch (e) {
       notifyWithIcon('error', 'Ocorreu um ero ao carregar as estatísticas, por favor, tente novamente mais tarde.');
     }
@@ -83,7 +102,7 @@ class Dashboard extends React.Component {
       const data = await this.getStatistic(values);
 
       this.setState({
-        data: data.reverse(),
+        data: data,
         isStatisticLoaded: true,
         loadingStatistic: false
       });
@@ -116,6 +135,24 @@ class Dashboard extends React.Component {
 
         <Row>
           <Col span={24}>
+            <h3>Mínimas e Máximas:</h3>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col span={24}>
+            <List
+              className="measures"
+              dataSource={this.state.data.minMax}
+              renderItem={item => (<List.Item><b style={{color: item.color}}>{item.text}:</b>{item.min}<span className="text-divisor">|</span>{item.max}</List.Item>)}
+            />
+          </Col>
+        </Row>
+
+        <Divider/>
+
+        <Row>
+          <Col span={24}>
             <h3>Gráficos:</h3>
           </Col>
         </Row>
@@ -123,18 +160,15 @@ class Dashboard extends React.Component {
         <Row>
           <Col span={24}>
             <ResponsiveContainer width="100%" height={350} ref={this.chartRef}>
-              <LineChart data={this.state.data}>
+              <LineChart data={this.state.data.averages}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line name="Temperatura" type="monotone" dataKey="ambienceTemperature" stroke="#d11141" />
-                <Line name="Chuva" type="monotone" dataKey="rainfall" stroke="#00a119" />
-                <Line name="Incidência Solar" type="monotone" dataKey="sunCapability" stroke="#00aedb" />
-                <Line name="Umidade" type="monotone" dataKey="humidity" stroke="#f37735" />
-                <Line name="Temperatura a umidade" type="monotone" dataKey="temperatureHumidity" stroke="#ffc425" />
-                <Line name="Intensidade de luz" type="monotone" dataKey="lightIntensity" stroke="#9a12c7" />
+                {columns.map(c => {
+                  return (<Line name={c.text} key={c.key} type="monotone" dataKey={c.key} stroke={c.color} />)
+                })}
               </LineChart>
             </ResponsiveContainer>
           </Col>

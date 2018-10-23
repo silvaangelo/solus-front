@@ -1,3 +1,11 @@
+.text-divisor {
+    padding: 0px 2px 0px 2px;
+}
+
+.measures b {
+    margin-right: 2px;
+}
+
 .measures b.ambienceTemperature {
     color: #d11141;
     margin-right: 2px;
