@@ -2,10 +2,10 @@ import React from 'react';
 import { Form, Input, Button, Layout, Row, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import './style.css';
-import { API_ROUTES, API_HEADERS } from '../../api'
-import * as axios from 'axios'
+import { API_ROUTES, API_HEADERS } from '../../api';
+import * as axios from 'axios';
 import { notifyWithIcon } from '../helpers/notification';
-import { Auth } from '../../lib/auth'
+import { Auth } from '../../lib/auth';
 
 class Login extends React.Component {
   constructor(props) {
@@ -72,6 +72,12 @@ class Login extends React.Component {
                   <Button type="primary" htmlType='submit'>Entrar</Button>
                 </FormItem>
               </Form>
+            </Col>
+          </Row>
+
+          <Row style={{minWidth: "100%", marginTop: 25}}>
+            <Col xs={{span: 18, offset: 3}} sm={{span: 18, offset: 3}} md={{span: 8, offset: 7}} lg={{span: 6, offset: 9}}>
+              <p className="footer-copyright">Desenvolvido por <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo">Angelo</a></p>
             </Col>
           </Row>
         </Layout>

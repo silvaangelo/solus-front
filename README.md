@@ -6,6 +6,7 @@ Repositório para armazenamento do front end do sistema solus. Solus é uma apli
 
 - [API](https://github.com/silvaangelo/solus-api)
 - [Documentação](https://github.com/silvaangelo/solus-doc)
+- [Microcontrolador](https://github.com/silvaangelo/solus-arduino)
 
 ## Receita
 

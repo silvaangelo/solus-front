@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
         return arduino;
       });
     } catch (e) {
-      notifyWithIcon('error', 'Ocorreu um ero ao carregar os arduinos.');
+      notifyWithIcon('error', 'Ocorreu um erro ao carregar os arduinos.');
     }
   }
 
@@ -53,6 +53,13 @@ class Dashboard extends React.Component {
         },
         headers: API_HEADERS.headers
       });
+
+      if(!res.data.data.min) {
+        return {
+          averages: [],
+          minMax: []
+        }
+      }
 
       const [averages, minMax] = await Promise.all([
         res.data.data.statistic.map(e => {
@@ -76,8 +83,6 @@ class Dashboard extends React.Component {
           }
         })
       ]);
-
-      console.log(minMax);
 
       return {
         averages: averages.reverse(),
@@ -117,63 +122,63 @@ class Dashboard extends React.Component {
   }
 
   charts = () => {
-    if(!this.state.isStatisticLoaded && this.state.data.length <= 0) {
-      return (null);
-    }
-
     return (
-      <div>
-        <Divider/>
-    
-        <Row>
-          <Col span={24}>
-            <h2>Resultados:</h2>
-          </Col>
-        </Row>
+      <React.Fragment>
+      {this.state.isStatisticLoaded && this.state.data.minMax.length > 0 &&
+        <React.Fragment>
+          <Divider/>
+      
+          <Row>
+            <Col span={24}>
+              <h2>Resultados:</h2>
+            </Col>
+          </Row>
 
-        <Divider/>
+          <Divider/>
 
-        <Row>
-          <Col span={24}>
-            <h3>Mínimas e Máximas:</h3>
-          </Col>
-        </Row>
+          <Row>
+            <Col span={24}>
+              <h3>Mínimas e Máximas:</h3>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col span={24}>
-            <List
-              className="measures"
-              dataSource={this.state.data.minMax}
-              renderItem={item => (<List.Item><b style={{color: item.color}}>{item.text}:</b>{item.min}<span className="text-divisor">|</span>{item.max}</List.Item>)}
-            />
-          </Col>
-        </Row>
+          <Row>
+            <Col span={24}>
+              <List
+                className="measures"
+                dataSource={this.state.data.minMax}
+                renderItem={item => (<List.Item><b style={{color: item.color}}>{item.text}:</b>{item.min}<span className="text-divisor">|</span>{item.max}</List.Item>)}
+              />
+            </Col>
+          </Row>
 
-        <Divider/>
+          <Divider/>
 
-        <Row>
-          <Col span={24}>
-            <h3>Gráficos:</h3>
-          </Col>
-        </Row>
+          <Row>
+            <Col span={24}>
+              <h3>Gráficos:</h3>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col span={24}>
-            <ResponsiveContainer width="100%" height={350} ref={this.chartRef}>
-              <LineChart data={this.state.data.averages}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {columns.map(c => {
-                  return (<Line name={c.text} key={c.key} type="monotone" dataKey={c.key} stroke={c.color} />)
-                })}
-              </LineChart>
-            </ResponsiveContainer>
-          </Col>
-        </Row>
-      </div>
+          <Row>
+            <Col span={24}>
+              <ResponsiveContainer width="100%" height={350} ref={this.chartRef}>
+                <LineChart data={this.state.data.averages}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  {columns.map(c => {
+                    return (<Line name={c.text} key={c.key} type="monotone" dataKey={c.key} stroke={c.color} />)
+                  })}
+                </LineChart>
+              </ResponsiveContainer>
+            </Col>
+          </Row>
+        </React.Fragment>
+      }
+      </React.Fragment>
     );
   }
 

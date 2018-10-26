@@ -4,3 +4,17 @@
     align-items: center;
     min-height: 100vh !important;
 }
+
+.footer-copyright, .footer-copyright a {
+    text-align: center;
+    color: #999999;
+}
+
+.footer-copyright a {
+    font-weight: bold;
+}
+
+.footer-copyright a:hover {
+    color: #000088;
+    font-weight: bold;
+}
