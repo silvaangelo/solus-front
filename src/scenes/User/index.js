@@ -3,7 +3,7 @@ import TopMenu from '../menu';
 import { API_ROUTES, API_HEADERS } from '../../api';
 import * as axios from 'axios';
 import { notifyWithIcon } from '../helpers/notification';
-import { Layout, Row, Col, Table, Button, Icon, Divider, Modal } from 'antd';
+import { Layout, Row, Col, Table, Button, Icon, Divider, Modal, List, Card } from 'antd';
 import UserForm from './userModal';
 import moment from 'moment';
 
@@ -15,6 +15,7 @@ class User extends React.Component {
 
     this.state = {
       loading: true,
+      with: 0,
       showUserFormModal: false,
       isEdit: false,
       data: []
@@ -40,7 +41,13 @@ class User extends React.Component {
     }
   }
   
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth });
+  }
+
   async componentWillMount() {
+    this.updateWindowDimensions();
+
     await this.setState({
       data: await this.getUsers(),
       loading: false
@@ -239,7 +246,7 @@ class User extends React.Component {
         dataIndex: 'key',
         key: 'key',
         render: id => (
-          <span>
+          <span className="children-mr10">
             <Button type="primary" onClick={() => this.handleOpenEdit(id)}><Icon type="edit" /> Editar</Button>
 
             <Button type="danger" onClick={() => this.handleDelete(id) }><Icon type="delete" /> Deletar</Button>
@@ -272,10 +279,31 @@ class User extends React.Component {
             </Row>
           </Layout>
 
-          <Layout>
+          <Layout className="no-background">
             <Row>
               <Col span={24}>
-                <Table loading={this.state.loading} columns={columns} dataSource={this.state.data} pagination={false} />
+              {this.state.width > 575 ?
+                  <Table loading={this.state.loading} columns={columns} dataSource={this.state.data} pagination={false} />
+                :
+                  <List
+                    dataSource={this.state.data}
+                    loading={this.state.loading}
+                    renderItem={item => {
+                      return(
+                        <Card style={{marginBottom: 15}} bordered={true}>
+                          <p><b>Nome:</b> {item.name}</p>
+                          <p><b>Email:</b> {item.email}</p>
+                          <p><b>Criado em:</b> {<span>{moment(item.createdAt).format('DD/MM/YYYY HH:mm')}</span>}</p>
+                          <p><b>Última modificação:</b> {<span>{moment(item.updatedAt).format('DD/MM/YYYY HH:mm')}</span>}</p>
+                          <span className="children-mr10">
+                            <Button type="primary" onClick={() => this.handleOpenEdit(item.id)}><Icon type="edit" /> Editar</Button>
+                            <Button type="danger" onClick={() => this.handleDelete(item.id) }><Icon type="delete" /> Deletar</Button>
+                          </span>
+                        </Card>
+                      );
+                    }}
+                  />
+                }
               </Col>
             </Row>
           </Layout>

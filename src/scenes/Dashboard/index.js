@@ -12,6 +12,14 @@ import { LineChart, CartesianGrid, Tooltip, Line, XAxis, YAxis, Legend, Responsi
 class Dashboard extends React.Component {
   chartRef;
 
+  state = {
+    loading: true,
+    loadingStatistic: false,
+    isStatisticLoaded: false,
+    arduinos: [],
+    data: []
+  };
+
   constructor(props) {
     super(props);
 
@@ -41,6 +49,10 @@ class Dashboard extends React.Component {
     } catch (e) {
       notifyWithIcon('error', 'Ocorreu um erro ao carregar os arduinos.');
     }
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth });
   }
 
   getStatistic = async (values) => {
@@ -115,9 +127,11 @@ class Dashboard extends React.Component {
   }
   
   async componentWillMount() {
+    const data = await this.getArduinos();
+
     this.setState({
       loading: false,
-      arduinos: await this.getArduinos()
+      arduinos: data
     });
   }
 

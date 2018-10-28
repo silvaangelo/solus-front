@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Layout, Row, Col } from 'antd';
+import { Form, Input, Button, Layout, Row, Col, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import './style.css';
 import { API_ROUTES, API_HEADERS } from '../../api';
@@ -77,7 +77,7 @@ class Login extends React.Component {
 
           <Row style={{minWidth: "100%", marginTop: 25}}>
             <Col xs={{span: 18, offset: 3}} sm={{span: 18, offset: 3}} md={{span: 8, offset: 7}} lg={{span: 6, offset: 9}}>
-              <p className="footer-copyright">Desenvolvido por <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo">Angelo</a></p>
+              <p className="footer-copyright">Desenvolvido por <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo">Angelo</a> | <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo/solus-front"><Icon type="github" theme="outlined" /></a></p>
             </Col>
           </Row>
         </Layout>
