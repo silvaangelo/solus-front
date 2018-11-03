@@ -50,34 +50,45 @@ class Login extends React.Component {
       <div>
         <Layout className="vh100">
           <Row style={{minWidth: '100%'}}>
-            <Col xs={{span: 18, offset: 3}} sm={{span: 18, offset: 3}} md={{span: 8, offset: 7}} lg={{span: 6, offset: 9}}>
-              <Form onSubmit={this.handleSubmit}>
-                <FormItem label='E-mail'>
-                  {getFieldDecorator('email', {
-                    rules: [{ required: true, message: 'Por favor insira o e-mail.' }],
-                  })(
-                    <Input placeholder={"E-mail"} required={true} type='email' />
-                  )}
-                </FormItem>
+            <Col className="banner left center all" xs={{span: 0}} sm={{span: 0}} md={{span: 0}} lg={{span: 8}}>
+              <div>
+                <h1>Solus</h1>
+              </div>
 
-                <FormItem label='Senha'>
-                  {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Por favor insira a senha.' }],
-                  })(
-                    <Input placeholder={"Senha"} required={true} type='password' />
-                  )}
-                </FormItem>
-
-                <FormItem>
-                  <Button type="primary" htmlType='submit'>Entrar</Button>
-                </FormItem>
-              </Form>
+              <div className="credits">
+                <footer>
+                  <p className="footer-copyright">Desenvolvido por <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo">Angelo</a> | <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo/solus-front"><Icon type="github" theme="outlined" /></a></p>
+                </footer>
+              </div>
             </Col>
-          </Row>
+            <Col className="center all" xs={{span: 24}} sm={{span: 24}} md={{span: 16}} lg={{span: 16}}>
+              <div className="w100">
+              <Row style={{minWidth: '100%'}}>
+                <Col xs={{span: 18, offset: 3}} sm={{span: 18, offset: 3}} md={{span: 8, offset: 8}} lg={{span: 8, offset: 8}}>
+                  <Form onSubmit={this.handleSubmit}>
+                    <FormItem label='E-mail'>
+                      {getFieldDecorator('email', {
+                        rules: [{ required: true, message: 'Por favor insira o e-mail.' }],
+                      })(
+                        <Input placeholder={"E-mail"} required={true} type='email' />
+                      )}
+                    </FormItem>
 
-          <Row style={{minWidth: "100%", marginTop: 25}}>
-            <Col xs={{span: 18, offset: 3}} sm={{span: 18, offset: 3}} md={{span: 8, offset: 7}} lg={{span: 6, offset: 9}}>
-              <p className="footer-copyright">Desenvolvido por <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo">Angelo</a> | <a target="_blank" rel='noreferrer noopener' href="http://github.com/silvaangelo/solus-front"><Icon type="github" theme="outlined" /></a></p>
+                    <FormItem label='Senha'>
+                      {getFieldDecorator('password', {
+                        rules: [{ required: true, message: 'Por favor insira a senha.' }],
+                      })(
+                        <Input placeholder={"Senha"} required={true} type='password' />
+                      )}
+                    </FormItem>
+
+                    <FormItem>
+                      <Button type="primary" htmlType='submit'>Entrar</Button>
+                    </FormItem>
+                  </Form>
+                </Col>
+              </Row>
+              </div>
             </Col>
           </Row>
         </Layout>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+
 #main-menu {
     position: fixed;
     width: 100%;
@@ -39,4 +41,22 @@
     margin-right: auto;
     max-width: 90%;
     margin-bottom: 30px;
+}
+
+@media screen and (max-width: 480px) {
+    .ant-col-xs-0 {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .ant-col-sm-0 {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ant-col-md-0 {
+        display: none !important;
+    }
 }

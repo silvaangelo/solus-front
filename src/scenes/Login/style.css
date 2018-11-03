@@ -3,18 +3,54 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh !important;
+    overflow: hidden;
+    display: flex;
 }
 
-.footer-copyright, .footer-copyright a {
+.vh100 .banner.left {
+    background: url(../../assets/loginbg.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.vh100 .banner.left h1 {
+    color: #FFFFFF;
+    font-weight: 700;
+    font-family: "Roboto";
+    font-size: 7rem;
+}
+
+.vh100 .banner.left .credits {
+    position: absolute;
+    display: block;
+    bottom: 0;
+}
+
+.vh100 .banner.left .credits .footer-copyright, .footer-copyright a {
     text-align: center;
     color: #999999;
 }
 
-.footer-copyright a {
+.vh100 .banner.left .credits .footer-copyright a {
     font-weight: bold;
 }
 
-.footer-copyright a:hover {
+.vh100 .banner.left .credits .footer-copyright a:hover {
     color: #40A9FF;
     font-weight: bold;
+}
+
+.vh100 .center.all {
+    display: inline-flex;
+    flex-grow: 1;
+    min-height: 100vh;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.vh100 .center.all .w100 {
+    min-width: 100%;
 }
