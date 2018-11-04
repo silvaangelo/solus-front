@@ -5,6 +5,7 @@ import { Route, Redirect, BrowserRouter, Switch } from 'react-router-dom';
 import { Auth } from '../lib/auth'
 import Arduino from './Arduino';
 import User from './User';
+import Profile from './Profile'
 
 const Routes = () => {
   return (
@@ -13,8 +14,9 @@ const Routes = () => {
         <Redirect exact from='/' to='/login' />
         <Route exact path='/login' component={Login} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
-        <PrivateRoute exact path='/arduino' component={Arduino} />
-        <PrivateRoute exact path='/user' component={User} />
+        <PrivateRoute exact path='/stations' component={Arduino} />
+        <PrivateRoute exact path='/users' component={User} />
+        <PrivateRoute exact path='/profile' component={Profile} />
         <Route exact path='/logout' render={props => {
           Auth.logout();
           

@@ -11,7 +11,7 @@ class Arduino extends React.Component {
   constructor(props) {
     super(props);
 
-    document.title = 'Solus | Arduinos';
+    document.title = 'Solus | Estações';
 
     this.state = {
       loading: true,
@@ -37,7 +37,7 @@ class Arduino extends React.Component {
         };
       });
     } catch (e) {
-      notifyWithIcon('error', 'Ocorreu um ero ao carregar os arduinos.');
+      notifyWithIcon('error', 'Ocorreu um ero ao carregar as estações.');
     }
   }
 
@@ -57,7 +57,7 @@ class Arduino extends React.Component {
   async handleDelete(id) {
     try {
       Modal.confirm({
-        title: 'Confirmar exclusão do arduino e todas as suas capturas?',
+        title: 'Confirmar exclusão da estação e todas as suas capturas?',
         okText: 'Sim',
         cancelText: 'Não',
 
@@ -248,7 +248,7 @@ class Arduino extends React.Component {
           <Layout className="no-background">
             <Row>
               <Col span={24}>
-                <h1>Arduinos</h1>
+                <h1>Estações meteorológicas</h1>
                 <Divider/>
               </Col>
             </Row>
@@ -257,7 +257,7 @@ class Arduino extends React.Component {
               <Col span={24}>
                 <div className="mb10">
                   <Button type="primary" onClick={() => this.setState({ showArduinoFormModal: true })}>
-                    Adicionar novo
+                    Adicionar nova
                   </Button>
                 </div>
               </Col>

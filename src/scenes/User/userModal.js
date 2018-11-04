@@ -64,7 +64,7 @@ const UserForm = Form.create()(
                   )}
                 </FormItem>
               </div>
-              </Form>       
+              </Form>
           </Modal>
         </div>
       );
