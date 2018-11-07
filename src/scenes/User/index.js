@@ -182,8 +182,8 @@ class User extends React.Component {
 
         this.setState(prev => ({
           data: [...prev.data, {
-            key: user._id,
-            id: user._id,
+            key: user.id,
+            id: user.id,
             name: user.name,
             email: user.email,
             createdAt: user.createdAt,

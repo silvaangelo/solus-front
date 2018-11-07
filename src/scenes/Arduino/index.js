@@ -80,6 +80,7 @@ class Arduino extends React.Component {
 
   handleOpenEdit = async (id) => {
     const arduino = this.state.data.filter(x => x.id === id)[0];
+
     const form = this.arduinoFormRef.props.form;
 
     this.setState({
@@ -167,8 +168,8 @@ class Arduino extends React.Component {
 
         this.setState(prev => ({
           data: [...prev.data, {
-            key: arduino._id,
-            id: arduino._id,
+            key: arduino.id,
+            id: arduino.id,
             name: arduino.name,
             location: arduino.location,
             createdAt: arduino.createdAt,
@@ -281,8 +282,8 @@ class Arduino extends React.Component {
                           <p><b>Criado em:</b> {<span>{moment(item.createdAt).format('DD/MM/YYYY HH:mm')}</span>}</p>
                           <p><b>Última modificação:</b> {<span>{moment(item.updatedAt).format('DD/MM/YYYY HH:mm')}</span>}</p>
                           <span className="children-mr10">
-                            <Button type="primary" onClick={() => this.handleOpenEdit(item.id)}><Icon type="edit" /> Editar</Button>
-                            <Button type="danger" onClick={() => this.handleDelete(item.id) }><Icon type="delete" /> Deletar</Button>
+                            <Button type="primary" onClick={() => this.handleOpenEdit(item.key)}><Icon type="edit" /> Editar</Button>
+                            <Button type="danger" onClick={() => this.handleDelete(item.key) }><Icon type="delete" /> Deletar</Button>
                           </span>
                         </Card>
                       );

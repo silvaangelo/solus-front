@@ -25,8 +25,8 @@ class Profile extends React.Component {
         const res = await axios.get(`${API_ROUTES.user}/${Auth.getId()}`, API_HEADERS);
 
         return {
-          key: res.data.data._id,
-          id: res.data.data._id,
+          key: res.data.data.id,
+          id: res.data.data.id,
           name: res.data.data.name,
           email: res.data.data.email,
           createdAt: res.data.data.createdAt,
@@ -92,8 +92,8 @@ class Profile extends React.Component {
           loading: false,
           isEdit: false,
           data: {
-            key: user._id,
-            id: user._id,
+            key: user.id,
+            id: user.id,
             name: user.name,
             email: user.email,
             createdAt: user.createdAt,

@@ -41,8 +41,7 @@ class Dashboard extends React.Component {
       const res = await axios.get(API_ROUTES.arduino, API_HEADERS);
 
       return res.data.data.map(arduino => {
-        arduino.key = arduino._id;
-        arduino.id = arduino._id;
+        arduino.key = arduino.id;
 
         return arduino;
       });
@@ -75,7 +74,7 @@ class Dashboard extends React.Component {
 
       const [averages, minMax] = await Promise.all([
         res.data.data.statistic.map(e => {
-          e.date = moment(e._id).local().format('HH:mm DD/MM/YYYY');
+          e.date = moment(e.id).local().format('HH:mm DD/MM/YYYY');
           e.ambienceTemperature = parseInt(e.ambienceTemperature);
           e.rainfall = parseInt(e.rainfall);
           e.sunCapability = parseInt(e.sunCapability);
