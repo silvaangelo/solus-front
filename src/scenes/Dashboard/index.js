@@ -41,7 +41,8 @@ class Dashboard extends React.Component {
       const res = await axios.get(API_ROUTES.arduino, API_HEADERS);
 
       return res.data.data.map(arduino => {
-        arduino.key = arduino.id;
+        arduino.key = arduino._id;
+        arduino.id = arduino._id;
 
         return arduino;
       });
