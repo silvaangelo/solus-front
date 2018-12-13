@@ -168,8 +168,8 @@ class Arduino extends React.Component {
 
         this.setState(prev => ({
           data: [...prev.data, {
-            key: arduino.id,
-            id: arduino.id,
+            key: arduino._id,
+            id: arduino._id,
             name: arduino.name,
             location: arduino.location,
             createdAt: arduino.createdAt,
